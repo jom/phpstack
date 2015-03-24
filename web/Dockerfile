@@ -56,7 +56,7 @@ RUN \
 	chmod +x /etc/service/php-fpm/run
 
 # Data volumes
-VOLUME ["/var/www", "/run"]
+VOLUME ["/var/www"]
 
 # Expose 8080 to the host
 EXPOSE 80
