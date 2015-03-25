@@ -8,7 +8,7 @@
 # Set PHP pools to take up to 1/2 of total system memory total, split between the two pools.
 # 30MB per process is conservative estimate, is usually less than that
 SERVER_IP_ADDRESS=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
-echo "Web Server IP Address: $SERVER_IP_ADDRESS\n\n"
+echo "Web Server IP Address: $SERVER_IP_ADDRESS"
 
 PHP_MAX=$(expr $(grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//') / 1024 / 2 / 30 / 2)
 sed -i -e"s/pm.max_children = 5/pm.max_children = $PHP_MAX/" /etc/php5/fpm/pool.d/www.conf

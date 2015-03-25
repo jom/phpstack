@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SERVER_IP_ADDRESS=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
-echo "MySQL Server IP Address: $SERVER_IP_ADDRESS\n\n"
+echo "MySQL Server IP Address: $SERVER_IP_ADDRESS"
 
 if [ ! -f /mysql-configured ]; then
   touch /mysql-configured
