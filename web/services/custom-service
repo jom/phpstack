@@ -1,4 +1,4 @@
-#!/bin/sh
-if [-f /var/www/service ]; then
+#!/bin/bash
+if [ -f /var/www/service ]; then
 	exec /var/www/service
 fi
