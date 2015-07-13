@@ -44,6 +44,7 @@ ADD ./conf/php.ini /etc/php5/fpm/conf.d/00_custom.ini
 # Add runit files for each service
 ADD ./services/nginx /etc/service/nginx/run
 ADD ./services/php-fpm /etc/service/php-fpm/run
+ADD ./services/custom-service /etc/service/custom-service/run
 
 ADD ./shell/start.sh /etc/my_init.d/001_web.sh
 
@@ -53,7 +54,8 @@ ADD ./shell/composer /usr/local/bin/composer
 # Execute permissions where needed
 RUN \
 	chmod +x /etc/service/nginx/run && \
-	chmod +x /etc/service/php-fpm/run
+	chmod +x /etc/service/php-fpm/run && \
+	chmod +x /etc/service/custom-service/run
 
 # Data volumes
 VOLUME ["/var/www"]
