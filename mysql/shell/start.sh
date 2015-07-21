@@ -3,9 +3,7 @@
 SERVER_IP_ADDRESS=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 echo "MySQL Server IP Address: $SERVER_IP_ADDRESS"
 
-if [ ! -f /mysql-configured ]; then
-  touch /mysql-configured
-  
+if [ ! -f /var/lib/mysql/mysql-configured ]; then
   if [ ! -f /var/lib/mysql/ibdata1 ]; then
     mysql_install_db
   fi
@@ -31,4 +29,8 @@ if [ ! -f /mysql-configured ]; then
   mysql -uroot -p$MYSQL_PASSWORD -e "CREATE DATABASE \`$DB_NAME\`;"
 
   mysqladmin -uroot -p$MYSQL_PASSWORD shutdown
+
+  touch /var/lib/mysql/mysql-configured
+else 
+  /usr/bin/mysqld_safe > /dev/null 2>&1 &
 fi
