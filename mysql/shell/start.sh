@@ -31,6 +31,4 @@ if [ ! -f /var/lib/mysql/mysql-configured ]; then
   mysqladmin -uroot -p$MYSQL_PASSWORD shutdown
 
   touch /var/lib/mysql/mysql-configured
-else 
-  /usr/bin/mysqld_safe > /dev/null 2>&1 &
 fi
