@@ -36,5 +36,6 @@ EXPOSE 6379
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN usermod -u 1000 www-data
 
 WORKDIR /var/lib/redis
