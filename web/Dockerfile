@@ -64,7 +64,7 @@ VOLUME ["/var/www", "/var/www/cron"]
 # Expose 8080 to the host
 EXPOSE 80
 
-COPY ./cron/* /var/www/cron
+COPY ./cron/* /var/www/cron/
 RUN chmod +x /var/www/cron/*
 RUN chown -R www-data.www-data /var/www/cron
 
