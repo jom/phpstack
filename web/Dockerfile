@@ -56,7 +56,8 @@ ADD ./shell/composer /usr/local/bin/composer
 RUN \
 	chmod +x /etc/service/nginx/run && \
 	chmod +x /etc/service/php-fpm/run && \
-	chmod +x /etc/service/custom-service/run
+	chmod +x /etc/service/custom-service/run && \
+	chmod +x /usr/local/bin/composer
 
 # Data volumes
 VOLUME ["/var/www", "/var/www/cron"]
