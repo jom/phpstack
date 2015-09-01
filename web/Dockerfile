@@ -65,8 +65,6 @@ VOLUME ["/var/www", "/var/www/cron"]
 EXPOSE 80
 
 COPY ./cron/* /var/www/cron/
-RUN chmod +x /var/www/cron/*
-RUN chown -R www-data.www-data /var/www/cron
 
 RUN \ 
 	(crontab -l ; echo "10 * * * * sudo -u www-data /var/www/cron/hourly.cron.sh") | sort - | uniq - | crontab - && \
