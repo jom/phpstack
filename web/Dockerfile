@@ -51,6 +51,7 @@ ADD ./shell/start.sh /etc/my_init.d/001_web.sh
 # Installation helpers
 ADD ./shell/composer /usr/local/bin/composer
 
+
 # Execute permissions where needed
 RUN \
 	chmod +x /etc/service/nginx/run && \
@@ -62,6 +63,16 @@ VOLUME ["/var/www"]
 
 # Expose 8080 to the host
 EXPOSE 80
+
+COPY ./cron /var/www/cron
+
+RUN \ 
+	(crontab -l ; echo "10 * * * * /var/www/cron/hourly.cron.sh") | sort - | uniq - | crontab - && \
+	(crontab -l ; echo "0 0 * * * /var/www/cron/midnight.cron.sh") | sort - | uniq - | crontab - && \
+	(crontab -l ; echo "0 19 * * * /var/www/cron/evening.cron.sh") | sort - | uniq - | crontab - && \
+	(crontab -l ; echo "0 4 * * * /var/www/cron/morning.cron.sh") | sort - | uniq - | crontab - && \
+	(crontab -l ; echo "0 1 * * 0 /var/www/cron/weekly.cron.sh") | sort - | uniq - | crontab - && \
+	(crontab -l ; echo "0 2 1 * * /var/www/cron/monthly.cron.sh") | sort - | uniq - | crontab -
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
