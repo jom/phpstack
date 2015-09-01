@@ -59,12 +59,13 @@ RUN \
 	chmod +x /etc/service/custom-service/run
 
 # Data volumes
-VOLUME ["/var/www"]
+VOLUME ["/var/www", "/var/www/cron"]
 
 # Expose 8080 to the host
 EXPOSE 80
 
-COPY ./cron /var/www/cron
+COPY ./cron/* /var/www/cron
+RUN chmod +x /var/www/cron/*
 
 RUN \ 
 	(crontab -l ; echo "10 * * * * /var/www/cron/hourly.cron.sh") | sort - | uniq - | crontab - && \
