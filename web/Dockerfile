@@ -23,7 +23,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
     && composer.phar global require --no-progress "codeception/specify=*" \
     && composer.phar global require --no-progress "codeception/verify=*"
 
-RUN usermod -u 1000 www-data
+RUN usermod -u 1000 -s /bin/bash www-data
 
 # Configuration
 RUN \

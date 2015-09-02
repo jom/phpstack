@@ -30,6 +30,6 @@ EXPOSE 3360
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN usermod -u 1000 www-data
+RUN usermod -u 1000 -s /bin/bash www-data
 
 WORKDIR /var/lib/mysql
