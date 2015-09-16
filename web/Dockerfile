@@ -13,7 +13,8 @@ RUN \
 	add-apt-repository ppa:ondrej/php5-5.6 && \
 	add-apt-repository -y ppa:nginx/stable && \
 	apt-get update && \
-	apt-get -y install nginx mysql-client git php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-gd php5-intl php5-xsl pwgen wget unzip
+	apt-get -y install nginx mysql-client git libevent-dev php5-dev php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-gd php5-intl php5-xsl pwgen wget unzip && \
+	yes '' | pecl install libevent-0.1.0
 
 # Next composer and global composer package, as their versions may change from time to time
 RUN curl -sS https://getcomposer.org/installer | php \
