@@ -21,10 +21,10 @@ RUN usermod -u 1000 -s /bin/bash www-data
 # Next composer and global composer package, as their versions may change from time to time
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer.phar \
-    && sudo -u www-data composer.phar global require --no-progress "fxp/composer-asset-plugin:1.0.*" \
-    && sudo -u www-data composer.phar global require --no-progress "codeception/codeception=2.0.*" \
-    && sudo -u www-data composer.phar global require --no-progress "codeception/specify=*" \
-    && sudo -u www-data composer.phar global require --no-progress "codeception/verify=*"
+    && /bin/bash -c "sudo -u www-data composer.phar global require --no-progress \"fxp/composer-asset-plugin:1.0.*\"" \
+    && /bin/bash -c "sudo -u www-data composer.phar global require --no-progress \"codeception/codeception=2.0.*\"" \
+    && /bin/bash -c "sudo -u www-data composer.phar global require --no-progress \"codeception/specify=*\"" \
+    && /bin/bash -c "sudo -u www-data composer.phar global require --no-progress \"codeception/verify=*\""
 
 # Configuration
 RUN \
