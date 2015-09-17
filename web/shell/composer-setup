@@ -12,6 +12,7 @@ if [ ! -f /usr/local/bin/composer.phar ]; then
 	    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/codeception=2.0.*\"" \
 	    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/specify=*\"" \
 	    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/verify=*\""
+	    && cp -R /var/www/.composer /root
 else 
 	echo "Composer has already been set up"
 fi
