@@ -22,8 +22,8 @@ RUN usermod -u 1000 -s /bin/bash www-data
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer.phar \
     && /bin/su www-data -c "composer.phar global require --no-progress \"fxp/composer-asset-plugin:1.0.*\"" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/codeception=2.0.*\" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/specify=*\" \
+    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/codeception=2.0.*\"" \
+    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/specify=*\"" \
     && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/verify=*\""
 
 # Configuration
