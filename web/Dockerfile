@@ -43,6 +43,7 @@ ADD ./shell/start.sh /etc/my_init.d/001_web.sh
 
 # Installation helpers
 ADD ./shell/composer /usr/local/bin/composer
+ADD ./shell/composer-setup /usr/local/bin/composer-setup
 
 
 # Execute permissions where needed
@@ -50,19 +51,11 @@ RUN \
 	chmod +x /etc/service/nginx/run && \
 	chmod +x /etc/service/php-fpm/run && \
 	chmod +x /etc/service/custom-service/run && \
-	chmod +x /usr/local/bin/composer
+	chmod +x /usr/local/bin/composer && \
+	chmod +x /usr/local/bin/composer-setup
 
 # Data volumes
 VOLUME ["/var/www", "/var/www/cron"]
-
-# Next composer and global composer package, as their versions may change from time to time
-RUN curl -sS https://getcomposer.org/installer | php \
-    && /bin/sh -c "mv composer.phar /usr/local/bin/composer.phar" \
-    && /bin/sh -c "chown www-data.www-data /var/www" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"fxp/composer-asset-plugin:1.0.*\"" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/codeception=2.0.*\"" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/specify=*\"" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/verify=*\""
     
 # Expose 8080 to the host
 EXPOSE 80
