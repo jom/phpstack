@@ -18,14 +18,6 @@ RUN \
 
 RUN usermod -u 1000 -s /bin/bash www-data
 
-# Next composer and global composer package, as their versions may change from time to time
-RUN /bin/sh -c "curl -sS https://getcomposer.org/installer | php" \
-    && /bin/sh -c "mv composer.phar /usr/local/bin/composer.phar" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"fxp/composer-asset-plugin:1.0.*\"" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/codeception=2.0.*\"" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/specify=*\"" \
-    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/verify=*\""
-
 # Configuration
 RUN \
 	sed -i -e"s/events\s{/events {\n\tuse epoll;/" /etc/nginx/nginx.conf && \
@@ -63,6 +55,15 @@ RUN \
 # Data volumes
 VOLUME ["/var/www", "/var/www/cron"]
 
+# Next composer and global composer package, as their versions may change from time to time
+RUN curl -sS https://getcomposer.org/installer | php \
+    && /bin/sh -c "mv composer.phar /usr/local/bin/composer.phar" \
+    && /bin/sh -c "chown www-data.www-data /var/www" \
+    && /bin/su www-data -c "composer.phar global require --no-progress \"fxp/composer-asset-plugin:1.0.*\"" \
+    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/codeception=2.0.*\"" \
+    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/specify=*\"" \
+    && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/verify=*\""
+    
 # Expose 8080 to the host
 EXPOSE 80
 
