@@ -19,8 +19,8 @@ RUN \
 RUN usermod -u 1000 -s /bin/bash www-data
 
 # Next composer and global composer package, as their versions may change from time to time
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer.phar \
+RUN /bin/sh -c "curl -sS https://getcomposer.org/installer | php" \
+    && /bin/sh -c "mv composer.phar /usr/local/bin/composer.phar" \
     && /bin/su www-data -c "composer.phar global require --no-progress \"fxp/composer-asset-plugin:1.0.*\"" \
     && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/codeception=2.0.*\"" \
     && /bin/su www-data -c "composer.phar global require --no-progress \"codeception/specify=*\"" \
