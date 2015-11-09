@@ -3,7 +3,12 @@
 SERVER_IP_ADDRESS=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 echo "MySQL Server IP Address: $SERVER_IP_ADDRESS"
 
-dpkg-reconfigure -f noninteractive tzdata
+if [ $TZ ]; then
+  echo "Setting timezone: $TZ"
+  echo $TZ > /config/etc/timezone
+  dpkg-reconfigure -f noninteractive tzdata
+fi
+
 
 if [ ! -f /var/lib/mysql/mysql-configured ]; then
   if [ ! -f /var/lib/mysql/ibdata1 ]; then

@@ -10,7 +10,11 @@
 SERVER_IP_ADDRESS=$(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 echo "Web Server IP Address: $SERVER_IP_ADDRESS"
 
-dpkg-reconfigure -f noninteractive tzdata
+if [ $TZ ]; then
+  echo "Setting timezone: $TZ"
+  echo $TZ > /config/etc/timezone
+  dpkg-reconfigure -f noninteractive tzdata
+fi
 
 PHP_MAX=$(expr $(grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//') / 1024 / 2 / 30 / 2)
 sed -i -e"s/pm.max_children = 5/pm.max_children = $PHP_MAX/" /etc/php5/fpm/pool.d/www.conf
