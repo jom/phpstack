@@ -54,10 +54,12 @@ RUN \
 	chmod +x /usr/local/bin/composer && \
 	chmod +x /usr/local/bin/composer-setup
 
+RUN mkdir -p /config/etc && mv /etc/timezone /config/etc/ && ln -s /config/etc/timezone /etc/
+
 # Data volumes
-VOLUME ["/var/www", "/var/www/cron"]
-    
-# Expose 8080 to the host
+VOLUME ["/var/www", "/var/www/cron", "/config"]
+
+# Expose 80 to the host
 EXPOSE 80
 
 COPY ./cron/* /var/www/cron/

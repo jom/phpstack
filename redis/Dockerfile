@@ -29,8 +29,10 @@ ADD ./shell/start.sh /etc/my_init.d/003_redis.sh
 RUN \
 	chmod +x /etc/service/redis/run
 
+RUN mkdir -p /config/etc && mv /etc/timezone /config/etc/ && ln -s /config/etc/timezone /etc/
+
 # Data volumes
-VOLUME ["/var/lib/redis"]
+VOLUME ["/var/lib/redis", "/config"]
 
 EXPOSE 6379
 

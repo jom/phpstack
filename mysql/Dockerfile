@@ -23,8 +23,10 @@ ADD ./shell/start.sh /etc/my_init.d/002_mysql.sh
 # Execute permissions where needed
 RUN chmod +x /etc/service/mysql/run
 
+RUN mkdir -p /config/etc && mv /etc/timezone /config/etc/ && ln -s /config/etc/timezone /etc/
+
 # Data volumes
-VOLUME ["/var/lib/mysql"]
+VOLUME ["/var/lib/mysql", "/config"]
 
 EXPOSE 3360
 
