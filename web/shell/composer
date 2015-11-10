@@ -1,15 +1,15 @@
 #!/bin/bash
-if [ ! -f /usr/local/bin/composer.phar ]; then
+if [ ! -f /persist/bin/composer.phar ]; then
         /usr/local/bin/composer-setup
 fi
-if [ ! -f /usr/local/bin/composer.phar ]; then
+if [ ! -f /persist/bin/composer.phar ]; then
         echo "Composer is not set up. Run composer-setup from root."
         exit 1;
 fi
 
 if [ -n "$GITHUB_API_TOKEN" ]
 then
-    php /usr/local/bin/composer.phar config -g github-oauth.github.com $GITHUB_API_TOKEN
+    php /persist/bin/composer.phar config -g github-oauth.github.com $GITHUB_API_TOKEN
 fi
 
-exec php /usr/local/bin/composer.phar "$@"
+exec php /persist/bin/composer.phar "$@"

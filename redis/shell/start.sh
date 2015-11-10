@@ -5,6 +5,6 @@ echo "Redis Server IP Address: $SERVER_IP_ADDRESS"
 
 if [ $TZ ]; then
   echo "Setting timezone: $TZ"
-  echo $TZ > /config/etc/timezone
+  echo $TZ > /persist/etc/timezone
   dpkg-reconfigure -f noninteractive tzdata
 fi

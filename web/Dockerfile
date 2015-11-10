@@ -54,10 +54,12 @@ RUN \
 	chmod +x /usr/local/bin/composer && \
 	chmod +x /usr/local/bin/composer-setup
 
-RUN mkdir -p /config/etc && mv /etc/timezone /config/etc/ && ln -s /config/etc/timezone /etc/
+RUN mkdir -p /persist/etc && mkdir -p /persist/bin && mv /etc/timezone /persist/etc/ && ln -s /persist/etc/timezone /etc/
+
+ENV PATH /persist/bin:$PATH
 
 # Data volumes
-VOLUME ["/var/www", "/var/www/cron", "/config"]
+VOLUME ["/var/www", "/var/www/cron", "/persist"]
 
 # Expose 80 to the host
 EXPOSE 80
