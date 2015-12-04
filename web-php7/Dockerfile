@@ -22,16 +22,16 @@ RUN \
 	sed -i -e"s/events\s{/events {\n\tuse epoll;/" /etc/nginx/nginx.conf && \
 	sed -i -e"s/keepalive_timeout\s*65/keepalive_timeout 2;\n\tclient_max_body_size 100m;\n\tport_in_redirect off/" /etc/nginx/nginx.conf && \
 	echo "daemon off;" >> /etc/nginx/nginx.conf && \
-	sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php7/fpm/php.ini && \
-	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php7/fpm/php.ini && \
-	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 101M/g" /etc/php7/fpm/php.ini && \
-	sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php7/fpm/php-fpm.conf && \
-	sed -i -e "s/;pm.max_requests\s*=\s*500/pm.max_requests = 500/g" /etc/php7/fpm/pool.d/www.conf
+	sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/fpm/php.ini && \
+	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php/fpm/php.ini && \
+	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 101M/g" /etc/php/fpm/php.ini && \
+	sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/fpm/php-fpm.conf && \
+	sed -i -e "s/;pm.max_requests\s*=\s*500/pm.max_requests = 500/g" /etc/php/fpm/pool.d/www.conf
 
 # nginx site conf
 ADD ./conf/nginx-site.conf /etc/nginx/sites-available/default
-ADD ./conf/php.ini /etc/php7/cli/conf.d/00_custom.ini
-ADD ./conf/php.ini /etc/php7/fpm/conf.d/00_custom.ini
+ADD ./conf/php.ini /etc/php/cli/conf.d/00_custom.ini
+ADD ./conf/php.ini /etc/php/fpm/conf.d/00_custom.ini
 
 # Add runit files for each service
 ADD ./services/nginx /etc/service/nginx/run

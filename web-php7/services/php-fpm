@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /usr/sbin/php7-fpm -c /etc/php7/fpm
+exec /usr/sbin/php7-fpm -c /etc/php/fpm
