@@ -13,7 +13,7 @@ RUN \
 	add-apt-repository ppa:ondrej/php-7.0 && \
 	add-apt-repository -y ppa:nginx/stable && \
 	apt-get update && \
-	apt-get -y install nginx mysql-client git libevent-dev php7.0-dev php7.0-fpm php7.0-mysql php7.0-ldap php7.0-curl php7.0-cli php7.0-gd php7.0-intl pwgen wget unzip
+	apt-get -y install nginx mysql-client git nano libevent-dev php7.0-dev php7.0-fpm php7.0-mysql php7.0-ldap php7.0-curl php7.0-cli php7.0-gd php7.0-intl pwgen wget unzip
 
 RUN usermod -u 1000 -s /bin/bash www-data
 
