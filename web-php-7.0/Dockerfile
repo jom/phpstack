@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.16
+FROM phusion/baseimage:0.9.18
 MAINTAINER Jacob Morrison <jomorrison@gmail.com>
 
 ENV HOME /root
@@ -7,14 +7,13 @@ ENV HOME /root
 CMD ["/sbin/my_init"]
 
 # Install required packages
-# LANG=C.UTF-8 line is needed for ondrej/php5 repository
+# LANG=C.UTF-8 line is needed for ondrej/php7 repository
 RUN \
 	export LANG=C.UTF-8 && \
-	add-apt-repository ppa:ondrej/php5-5.6 && \
+	add-apt-repository ppa:ondrej/php-7.0 && \
 	add-apt-repository -y ppa:nginx/stable && \
 	apt-get update && \
-	apt-get -y install nginx mysql-client git libevent-dev php5-dev php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-gd php5-intl php5-xsl pwgen wget unzip && \
-	yes '' | pecl install libevent-0.1.0
+	apt-get -y install nginx mysql-client git libevent-dev php7.0-dev php7.0-fpm php7.0-mysql php7.0-ldap php7.0-curl php7.0-cli php7.0-gd php7.0-intl pwgen wget unzip
 
 RUN usermod -u 1000 -s /bin/bash www-data
 
@@ -23,16 +22,16 @@ RUN \
 	sed -i -e"s/events\s{/events {\n\tuse epoll;/" /etc/nginx/nginx.conf && \
 	sed -i -e"s/keepalive_timeout\s*65/keepalive_timeout 2;\n\tclient_max_body_size 100m;\n\tport_in_redirect off/" /etc/nginx/nginx.conf && \
 	echo "daemon off;" >> /etc/nginx/nginx.conf && \
-	sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini && \
-	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php5/fpm/php.ini && \
-	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 101M/g" /etc/php5/fpm/php.ini && \
-	sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php5/fpm/php-fpm.conf && \
-	sed -i -e "s/;pm.max_requests\s*=\s*500/pm.max_requests = 500/g" /etc/php5/fpm/pool.d/www.conf
+	sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/7.0/fpm/php.ini && \
+	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php/7.0/fpm/php.ini && \
+	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 101M/g" /etc/php/7.0/fpm/php.ini && \
+	sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/7.0/fpm/php-fpm.conf && \
+	sed -i -e "s/;pm.max_requests\s*=\s*500/pm.max_requests = 500/g" /etc/php/7.0/fpm/pool.d/www.conf
 
 # nginx site conf
 ADD ./conf/nginx-site.conf /etc/nginx/sites-available/default
-ADD ./conf/php.ini /etc/php5/cli/conf.d/00_custom.ini
-ADD ./conf/php.ini /etc/php5/fpm/conf.d/00_custom.ini
+ADD ./conf/php.ini /etc/php/7.0/cli/conf.d/00_custom.ini
+ADD ./conf/php.ini /etc/php/7.0/fpm/conf.d/00_custom.ini
 
 # Add runit files for each service
 ADD ./services/nginx /etc/service/nginx/run
