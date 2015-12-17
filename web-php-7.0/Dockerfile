@@ -44,7 +44,6 @@ ADD ./shell/start.sh /etc/my_init.d/001_web.sh
 ADD ./shell/composer /usr/local/bin/composer
 ADD ./shell/composer-setup /usr/local/bin/composer-setup
 
-
 # Execute permissions where needed
 RUN \
 	chmod +x /etc/service/nginx/run && \
@@ -53,7 +52,12 @@ RUN \
 	chmod +x /usr/local/bin/composer && \
 	chmod +x /usr/local/bin/composer-setup
 
-RUN mkdir -p /persist/etc && mkdir -p /persist/bin && mv /etc/timezone /persist/etc/ && ln -s /persist/etc/timezone /etc/
+RUN mkdir -p /persist/etc && \
+	mkdir -p /persist/bin && \
+	mv /etc/timezone /persist/etc/ && \
+	ln -s /persist/etc/timezone /etc/ && \
+	mkdir -p /run/php && \
+	chown www-data.www-data /run/php
 
 ENV PATH /persist/bin:$PATH
 
