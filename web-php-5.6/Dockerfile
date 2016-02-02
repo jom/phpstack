@@ -10,12 +10,16 @@ CMD ["/sbin/my_init"]
 # LANG=C.UTF-8 line is needed for ondrej/php5 repository
 RUN \
 	export LANG=C.UTF-8 && \
-	apt-add-repository ppa:phalcon/stable && \
 	add-apt-repository ppa:ondrej/php5-5.6 && \
 	add-apt-repository -y ppa:nginx/stable && \
 	apt-get update && \
-	apt-get -y install nginx mysql-client git nano libevent-dev php5-dev php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-phalcon php5-gd php5-intl php5-xsl pwgen wget unzip && \
-	yes '' | pecl install libevent-0.1.0
+	apt-get -y install nginx mysql-client git nano gcc libevent-dev libpcre3-dev php5-dev php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-xcache php5-gd php5-intl php5-xsl pwgen wget unzip && \
+	yes '' | pecl install libevent-0.1.0 && \
+	git clone --depth=1 git://github.com/phalcon/cphalcon.git -b phalcon-v2.0.9 cphalcon && \
+	cd cphalcon/build && \
+	./install && \
+	echo 'extension=phalcon.so' >> /etc/php5/fpm/conf.d/30-phalcon.ini && \
+	echo 'extension=phalcon.so' >> /etc/php5/cli/conf.d/30-phalcon.ini
 
 RUN usermod -u 1000 -s /bin/bash www-data
 
