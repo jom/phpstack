@@ -13,8 +13,9 @@ RUN \
 	add-apt-repository ppa:ondrej/php5-5.6 && \
 	add-apt-repository -y ppa:nginx/stable && \
 	apt-get update && \
-	apt-get -y install nginx mysql-client git nano gcc libevent-dev libpcre3-dev php5-dev php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-xcache php5-gd php5-intl php5-xsl pwgen wget unzip && \
-	yes '' | pecl install libevent-0.1.0
+	apt-get -y install libssl-dev libcurl4-openssl-dev nginx mysql-client git nano gcc libevent-dev libpcre3-dev php5-dev php-pear php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-xcache php5-gd php5-intl php5-xsl pwgen wget unzip && \
+	yes '' | pecl install libevent-0.1.0 && \
+	yes '' | pecl install mongodb
 
 RUN usermod -u 1000 -s /bin/bash www-data
 
