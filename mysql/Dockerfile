@@ -14,7 +14,8 @@ RUN \
 	apt-get -y install mysql-server mysql-client pwgen wget
 
 # Configuration
-RUN sed -i -e "s/bind-address\s*=/\# bind-address\s*=/g" /etc/mysql/my.cnf
+RUN sed -i -e "s/bind-address\s*=/\# bind-address\s*=/g" /etc/mysql/my.cnf && \
+		echo "innodb_use_native_aio = 0" >> /etc/mysql/my.cnf
 
 ADD ./services/mysql /etc/service/mysql/run
 
