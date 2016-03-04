@@ -82,6 +82,6 @@ RUN \
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENV NGINX_PUBLIC_DIRECTORY /var/www/web
+ENV NGINX_PUBLIC_DIRECTORY web
 
 WORKDIR /var/www
