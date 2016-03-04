@@ -1,4 +1,4 @@
 #!/bin/sh
 
-exec /usr/bin/envsubst < /etc/nginx/sites-available/default.template > /etc/nginx/sites-available/default
+exec /usr/bin/envsubst '$NGINX_PUBLIC_DIRECTORY' < /etc/nginx/sites-available/default.template > /etc/nginx/sites-available/default
 exec /usr/sbin/nginx
