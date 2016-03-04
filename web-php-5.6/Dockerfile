@@ -13,7 +13,7 @@ RUN \
 	add-apt-repository ppa:ondrej/php5-5.6 && \
 	add-apt-repository -y ppa:nginx/stable && \
 	apt-get update && \
-	apt-get -y install libssl-dev libcurl4-openssl-dev nginx mysql-client git nano gcc libevent-dev libpcre3-dev php5-dev php-pear php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-xcache php5-gd php5-intl php5-xsl pwgen wget unzip && \
+	apt-get -y install libssl-dev gettext-base libcurl4-openssl-dev nginx mysql-client git nano gcc libevent-dev libpcre3-dev php5-dev php-pear php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-xcache php5-gd php5-intl php5-xsl pwgen wget unzip && \
 	yes '' | pecl install libevent-0.1.0 && \
 	yes '' | pecl install mongodb
 
@@ -29,11 +29,11 @@ RUN \
 	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 101M/g" /etc/php5/fpm/php.ini && \
 	sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php5/fpm/php-fpm.conf && \
 	sed -i -e "s/;pm.max_requests\s*=\s*500/pm.max_requests = 500/g" /etc/php5/fpm/pool.d/www.conf && \
-	sed -i -e "s/;clear_env\s*=\s*no/clear_env = no/g" /etc/php5/fpm/pool.d/www.conf && \
-	cat ./conf/bashrc >> /etc/bash.bashrc
+	sed -i -e "s/;clear_env\s*=\s*no/clear_env = no/g" /etc/php5/fpm/pool.d/www.conf
 
 # nginx site conf
-ADD ./conf/nginx-site.conf /etc/nginx/sites-available/default
+ADD ./conf/bashrc /etc/bash.bashrc
+ADD ./conf/nginx-site.conf /etc/nginx/sites-available/default.template
 ADD ./conf/php.ini /etc/php5/cli/conf.d/00_custom.ini
 ADD ./conf/php.ini /etc/php5/fpm/conf.d/00_custom.ini
 
@@ -79,5 +79,7 @@ RUN \
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV NGINX_PUBLIC_DIRECTORY /var/www/web
 
 WORKDIR /var/www
