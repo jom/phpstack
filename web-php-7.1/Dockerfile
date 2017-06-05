@@ -13,7 +13,7 @@ RUN \
 	add-apt-repository ppa:ondrej/php && \
 	add-apt-repository -y ppa:nginx/stable && \
 	apt-get update && \
-	apt-get -y install nginx gettext-base  mysql-client git nano libevent-dev php7.0-fpm php7.0-mysql php7.0-mongodb php7.0-ldap php7.0-curl php7.0-cli php7.0-gd php7.0-intl pwgen wget unzip
+	apt-get -y install nginx gettext-base  mysql-client git nano libevent-dev php7.1-fpm php7.1-mysql php7.1-mongodb php7.1-ldap php7.1-curl php7.1-cli php7.1-gd php7.1-intl pwgen wget unzip
 
 RUN usermod -u 1000 -s /bin/bash www-data
 
@@ -22,18 +22,18 @@ RUN \
 	sed -i -e"s/events\s{/events {\n\tuse epoll;/" /etc/nginx/nginx.conf && \
 	sed -i -e"s/keepalive_timeout\s*65/keepalive_timeout 2;\n\tclient_max_body_size 100m;\n\tport_in_redirect off/" /etc/nginx/nginx.conf && \
 	echo "daemon off;" >> /etc/nginx/nginx.conf && \
-	sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/7.0/fpm/php.ini && \
-	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php/7.0/fpm/php.ini && \
-	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 101M/g" /etc/php/7.0/fpm/php.ini && \
-	sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/7.0/fpm/php-fpm.conf && \
-	sed -i -e "s/;pm.max_requests\s*=\s*500/pm.max_requests = 500/g" /etc/php/7.0/fpm/pool.d/www.conf && \
-	sed -i -e "s/;clear_env\s*=\s*no/clear_env = no/g" /etc/php/7.0/fpm/pool.d/www.conf
+	sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/7.1/fpm/php.ini && \
+	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php/7.1/fpm/php.ini && \
+	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 101M/g" /etc/php/7.1/fpm/php.ini && \
+	sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/7.1/fpm/php-fpm.conf && \
+	sed -i -e "s/;pm.max_requests\s*=\s*500/pm.max_requests = 500/g" /etc/php/7.1/fpm/pool.d/www.conf && \
+	sed -i -e "s/;clear_env\s*=\s*no/clear_env = no/g" /etc/php/7.1/fpm/pool.d/www.conf
 
 # nginx site conf
 ADD ./conf/bashrc /etc/bash.bashrc
 ADD ./conf/nginx-site.conf /etc/nginx/sites-available/default.template
-ADD ./conf/php.ini /etc/php/7.0/cli/conf.d/00_custom.ini
-ADD ./conf/php.ini /etc/php/7.0/fpm/conf.d/00_custom.ini
+ADD ./conf/php.ini /etc/php/7.1/cli/conf.d/00_custom.ini
+ADD ./conf/php.ini /etc/php/7.1/fpm/conf.d/00_custom.ini
 
 # Add runit files for each service
 ADD ./services/nginx /etc/service/nginx/run

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ ! -f /persist/bin/composer.phar ]; then
+	if [[ $EUID -ne 0 ]]; then
+	  echo "You must be a root user" 2>&1
+	  exit 1
+	fi
+	curl -sS https://getcomposer.org/installer | php \
+	    && /bin/sh -c "mv composer.phar /persist/bin/composer.phar" \
+	    && /bin/su www-data -c "/persist/bin/composer.phar global require --no-progress \"fxp/composer-asset-plugin:1.*\"" \
+	    && /bin/su www-data -c "/persist/bin/composer.phar global require --no-progress \"codeception/codeception=2.0.*\"" \
+	    && /bin/su www-data -c "/persist/bin/composer.phar global require --no-progress \"codeception/specify=*\"" \
+	    && /bin/su www-data -c "/persist/bin/composer.phar global require --no-progress \"codeception/verify=*\"" \
+	    && cp -R /var/www/.composer /root
+else 
+	echo "Composer has already been set up"
+fi

@@ -1,0 +1,2 @@
+export PATH=$PATH:./vendor/bin:./bin
+export TERM=xterm

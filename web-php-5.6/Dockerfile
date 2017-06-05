@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.18
+FROM phusion/baseimage:0.9.22
 MAINTAINER Jacob Morrison <jomorrison@gmail.com>
 
 ENV HOME /root
@@ -55,7 +55,10 @@ RUN \
 	chmod +x /etc/service/php-fpm/run && \
 	chmod +x /etc/service/custom-service/run && \
 	chmod +x /usr/local/bin/composer && \
-	chmod +x /usr/local/bin/composer-setup
+	chmod +x /usr/local/bin/composer-setup && \ 
+	wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+	mv wp-cli.phar /usr/local/bin/wp && \
+	chmod +x /usr/local/bin/wp
 
 RUN mkdir -p /persist/etc && mkdir -p /persist/bin && mv /etc/timezone /persist/etc/ && ln -s /persist/etc/timezone /etc/
 
