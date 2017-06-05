@@ -10,12 +10,11 @@ CMD ["/sbin/my_init"]
 # LANG=C.UTF-8 line is needed for ondrej/php5 repository
 RUN \
 	export LANG=C.UTF-8 && \
-	add-apt-repository ppa:ondrej/php5-5.6 && \
+	add-apt-repository ppa:ondrej/php && \
 	add-apt-repository -y ppa:nginx/stable && \
 	apt-get update && \
-	apt-get -y install libssl-dev gettext-base libcurl4-openssl-dev nginx mysql-client git nano gcc libevent-dev libpcre3-dev php5-dev php-pear php5-fpm php5-mysql php5-ldap php5-curl php5-mcrypt php5-cli php5-xcache php5-gd php5-intl php5-xsl pwgen wget unzip && \
-	yes '' | pecl install libevent-0.1.0 && \
-	yes '' | pecl install mongodb
+	apt-get -y install libssl-dev gettext-base libcurl4-openssl-dev nginx mysql-client git nano gcc libevent-dev libpcre3-dev php5.6-dev php-pear php5.6-fpm php5.6-mysql php5.6-ldap php5.6-curl php5.6-mcrypt php5.6-cli php5.6-xcache php5.6-gd php5.6-intl php5.6-xsl pwgen wget unzip && \
+	yes '' | pecl install libevent-0.1.0
 
 RUN usermod -u 1000 -s /bin/bash www-data
 
@@ -24,18 +23,18 @@ RUN \
 	sed -i -e"s/events\s{/events {\n\tuse epoll;/" /etc/nginx/nginx.conf && \
 	sed -i -e"s/keepalive_timeout\s*65/keepalive_timeout 2;\n\tclient_max_body_size 100m;\n\tport_in_redirect off/" /etc/nginx/nginx.conf && \
 	echo "daemon off;" >> /etc/nginx/nginx.conf && \
-	sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini && \
-	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php5/fpm/php.ini && \
-	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 101M/g" /etc/php5/fpm/php.ini && \
-	sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php5/fpm/php-fpm.conf && \
-	sed -i -e "s/;pm.max_requests\s*=\s*500/pm.max_requests = 500/g" /etc/php5/fpm/pool.d/www.conf && \
-	sed -i -e "s/;clear_env\s*=\s*no/clear_env = no/g" /etc/php5/fpm/pool.d/www.conf
+	sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/5.6/fpm/php.ini && \
+	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php/5.6/fpm/php.ini && \
+	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 101M/g" /etc/php/5.6/fpm/php.ini && \
+	sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/5.6/fpm/php-fpm.conf && \
+	sed -i -e "s/;pm.max_requests\s*=\s*500/pm.max_requests = 500/g" /etc/php/5.6/fpm/pool.d/www.conf && \
+	sed -i -e "s/;clear_env\s*=\s*no/clear_env = no/g" /etc/php/5.6/fpm/pool.d/www.conf
 
 # nginx site conf
 ADD ./conf/bashrc /etc/bash.bashrc
 ADD ./conf/nginx-site.conf /etc/nginx/sites-available/default.template
-ADD ./conf/php.ini /etc/php5/cli/conf.d/00_custom.ini
-ADD ./conf/php.ini /etc/php5/fpm/conf.d/00_custom.ini
+ADD ./conf/php.ini /etc/php/5.6/cli/conf.d/00_custom.ini
+ADD ./conf/php.ini /etc/php/5.6/fpm/conf.d/00_custom.ini
 
 # Add runit files for each service
 ADD ./services/nginx /etc/service/nginx/run
@@ -48,7 +47,6 @@ ADD ./shell/start.sh /etc/my_init.d/001_web.sh
 ADD ./shell/composer /usr/local/bin/composer
 ADD ./shell/composer-setup /usr/local/bin/composer-setup
 
-
 # Execute permissions where needed
 RUN \
 	chmod +x /etc/service/nginx/run && \
@@ -60,7 +58,12 @@ RUN \
 	mv wp-cli.phar /usr/local/bin/wp && \
 	chmod +x /usr/local/bin/wp
 
-RUN mkdir -p /persist/etc && mkdir -p /persist/bin && mv /etc/timezone /persist/etc/ && ln -s /persist/etc/timezone /etc/
+RUN mkdir -p /persist/etc && \
+	mkdir -p /persist/bin && \
+	mv /etc/timezone /persist/etc/ && \
+	ln -s /persist/etc/timezone /etc/ && \
+	mkdir -p /run/php && \
+	chown www-data.www-data /run/php
 
 ENV PATH /persist/bin:$PATH
 
